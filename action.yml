@@ -9,15 +9,18 @@ inputs:
     required: true
 runs:
   using: "composite"
+  shell: bash
   steps:
       - name: check prod tag existence
         id: check-prod-tag
         uses: delfidiagnotics/check-tag-existence@v1.0
+        shell: bash
         with:
           tag: ${{github.event.inputs.prod_tag}}
       - name: check stage tag existence
         id: check-stage-tag
         uses: delfidiagnotics/check-tag-existence@v1.0
+        shell: bash
         with:
           tag: ${{github.event.inputs.stage_tag}}
       - name: compare tags to show there was no differance between them
