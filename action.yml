@@ -9,18 +9,15 @@ inputs:
     required: true
 runs:
   using: "composite"
-  shell: bash
   steps:
       - name: check prod tag existence
         id: check-prod-tag
         uses: delfidiagnotics/check-tag-existence@v1.0
-        shell: bash
         with:
           tag: ${{github.event.inputs.prod_tag}}
       - name: check stage tag existence
         id: check-stage-tag
         uses: delfidiagnotics/check-tag-existence@v1.0
-        shell: bash
         with:
           tag: ${{github.event.inputs.stage_tag}}
       - name: compare tags to show there was no differance between them
@@ -31,7 +28,6 @@ runs:
       - name: evaluate tag diff
         if: (steps.diff-tags.outputs.num_diffs > 0)
         uses: actions/github-script@v3
-        shell: bash
         with:
           script: |
             core.setFailed('Cannot proceed. There were ${{steps.diff-tags.outputs.num_diffs}} changes between stage tag: ${{github.event.inputs.stage_tag}} and prod tag: ${{github.event.inputs.prod_tag}}')
