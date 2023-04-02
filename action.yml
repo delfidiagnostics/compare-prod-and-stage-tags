@@ -1,7 +1,7 @@
 name: compare-prod-and-stage-tags
 description: Compare two tags between stage and prod releases. Error if they have source code changes.
 inputs:
-  tag:  
+  prod_tag:  
     description: The prod tag to check
     required: true
   stage_tag:  
@@ -14,7 +14,7 @@ runs:
         id: check-prod-tag
         uses: delfidiagnostics/check-tag-existence@v1.1
         with:
-          tag: ${{inputs.tag}}
+          tag: ${{inputs.prod_tag}}
       - name: Check stage tag existence
         id: check-stage-tag
         uses: delfidiagnostics/check-tag-existence@v1.1
@@ -24,10 +24,10 @@ runs:
         id: diff-tags
         shell: bash
         run: |
-          echo "num_diffs=$(git diff ${{inputs.tag}} ${{inputs.stage_tag}} --stat | wc -l | tr -d ' ')" >> "$GITHUB_OUTPUT"
+          echo "num_diffs=$(git diff ${{inputs.prod_tag}} ${{inputs.stage_tag}} --stat | wc -l | tr -d ' ')" >> "$GITHUB_OUTPUT"
       - name: Evaluate tag diff
         if: (steps.diff-tags.outputs.num_diffs > 0)
         uses: actions/github-script@v3
         with:
           script: |
-            core.setFailed('Cannot proceed. ${{steps.diff-tags.outputs.num_diffs}} changes between prod tag: ${{inputs.tag}} and stage tag: ${{inputs.stage_tag}} ')
+            core.setFailed('Cannot proceed. ${{steps.diff-tags.outputs.num_diffs}} changes between prod tag: ${{inputs.prod_tag}} and stage tag: ${{inputs.stage_tag}} ')
