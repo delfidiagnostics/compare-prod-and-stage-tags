@@ -12,12 +12,12 @@ runs:
   steps:
       - name: check prod tag existence
         id: check-prod-tag
-        uses: delfidiagnostics/check-tag-existence@v1.0
+        uses: delfidiagnostics/check-tag-existence@v1.1
         with:
           tag: ${{inputs.tag}}
       - name: check stage tag existence
         id: check-stage-tag
-        uses: delfidiagnostics/check-tag-existence@v1.0
+        uses: delfidiagnostics/check-tag-existence@v1.1
         with:
           tag: ${{inputs.stage_tag}}
       - name: compare tags to show there was no differance between them
