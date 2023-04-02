@@ -10,7 +10,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-  steps:
       - name: check prod tag existence
         id: check-prod-tag
         uses: delfidiagnotics/check-tag-existence@v1.0
