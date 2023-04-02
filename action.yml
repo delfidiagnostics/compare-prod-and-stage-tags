@@ -14,20 +14,20 @@ runs:
         id: check-prod-tag
         uses: delfidiagnostics/check-tag-existence@v1.0
         with:
-          tag: ${{github.event.inputs.tag}}
+          tag: ${{inputs.tag}}
       - name: check stage tag existence
         id: check-stage-tag
         uses: delfidiagnostics/check-tag-existence@v1.0
         with:
-          tag: ${{github.event.inputs.stage_tag}}
+          tag: ${{inputs.stage_tag}}
       - name: compare tags to show there was no differance between them
         id: diff-tags
         shell: bash
         run: |
-          echo "num_diffs=$(git diff ${{github.event.inputs.tag}} ${{github.event.inputs.stage_tag}} --stat | wc -l | tr -d ' ')" >> "$GITHUB_OUTPUT"
+          echo "num_diffs=$(git diff ${{inputs.tag}} ${{inputs.stage_tag}} --stat | wc -l | tr -d ' ')" >> "$GITHUB_OUTPUT"
       - name: evaluate tag diff
         if: (steps.diff-tags.outputs.num_diffs > 0)
         uses: actions/github-script@v3
         with:
           script: |
-            core.setFailed('Cannot proceed. ${{steps.diff-tags.outputs.num_diffs}} changes between tags: ${{github.event.inputs.tag}} and ${{github.event.inputs.stage_tag}} ')
+            core.setFailed('Cannot proceed. ${{steps.diff-tags.outputs.num_diffs}} changes between prod: ${{inputs.tag}} and stage tag: ${{inputs.stage_tag}} ')
