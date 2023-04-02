@@ -22,11 +22,13 @@ runs:
           tag: ${{github.event.inputs.stage_tag}}
       - name: compare tags to show there was no differance between them
         id: diff-tags
+        shell: bash
         run: |
           echo "num_diffs=$(git diff ${{github.event.inputs.prod_tag}} ${{github.event.inputs.stage_tag}} --stat | wc -l | tr -d ' ')" >> "$GITHUB_OUTPUT"
       - name: evaluate tag diff
         if: (steps.diff-tags.outputs.num_diffs > 0)
         uses: actions/github-script@v3
+        shell: bash
         with:
           script: |
             core.setFailed('Cannot proceed. There were ${{steps.diff-tags.outputs.num_diffs}} changes between stage tag: ${{github.event.inputs.stage_tag}} and prod tag: ${{github.event.inputs.prod_tag}}')
