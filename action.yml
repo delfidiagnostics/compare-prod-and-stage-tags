@@ -30,4 +30,4 @@ runs:
         uses: actions/github-script@v3
         with:
           script: |
-            core.setFailed('Cannot proceed. There were ${{steps.diff-tags.outputs.num_diffs}} changes between stage: ${{github.event.inputs.stage_tag}} and prod: ${{github.event.inputs.prod_tag}}')
+            core.setFailed('Cannot proceed. ${{steps.diff-tags.outputs.num_diffs}} changes between stage: ${{github.event.inputs.stage_tag}} and prod: ${{github.event.inputs.prod_tag}}')
