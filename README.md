@@ -13,6 +13,6 @@ pre-deploy-prod:
         id: compare-tags
         uses: delfidiagnostics/compare-prod-and-stage-tags@v1.0
         with:
-          prod_tag: ${{inputs.tag}}
+          prod_tag: ${{inputs.prod_tag}}
           stage_tag: ${{inputs.stage_tag}}
 ```
