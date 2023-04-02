@@ -10,24 +10,24 @@ inputs:
 runs:
   using: "composite"
   steps:
-      - name: check prod tag existence
+      - name: Check prod tag existence
         id: check-prod-tag
         uses: delfidiagnostics/check-tag-existence@v1.1
         with:
           tag: ${{inputs.tag}}
-      - name: check stage tag existence
+      - name: Check stage tag existence
         id: check-stage-tag
         uses: delfidiagnostics/check-tag-existence@v1.1
         with:
           tag: ${{inputs.stage_tag}}
-      - name: compare tags to show there was no differance between them
+      - name: Compare tags to show there was no differance between them
         id: diff-tags
         shell: bash
         run: |
           echo "num_diffs=$(git diff ${{inputs.tag}} ${{inputs.stage_tag}} --stat | wc -l | tr -d ' ')" >> "$GITHUB_OUTPUT"
-      - name: evaluate tag diff
+      - name: Evaluate tag diff
         if: (steps.diff-tags.outputs.num_diffs > 0)
         uses: actions/github-script@v3
         with:
           script: |
-            core.setFailed('Cannot proceed. ${{steps.diff-tags.outputs.num_diffs}} changes between prod: ${{inputs.tag}} and stage tag: ${{inputs.stage_tag}} ')
+            core.setFailed('Cannot proceed. ${{steps.diff-tags.outputs.num_diffs}} changes between prod tag: ${{inputs.tag}} and stage tag: ${{inputs.stage_tag}} ')
